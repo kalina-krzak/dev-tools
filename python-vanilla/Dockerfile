@@ -6,6 +6,7 @@ ARG UBUNTU_VERSION=22.04
 # See reason for platform arg: https://stackoverflow.com/questions/71040681/qemu-x86-64-could-not-open-lib64-ld-linux-x86-64-so-2-no-such-file-or-direc
 # FROM --platform=linux/amd64 ubuntu:${UBUNTU_VERSION} 
 # For Julia try using arch64 linux (https://julialang.org/downloads/ see "Generic Linux on ARM")
+# see also https://discourse.julialang.org/t/julia-on-m1-macs/55448/21
 FROM ubuntu:${UBUNTU_VERSION} 
 
 # After every FROM statement, ARGs are collected and made unavailable
@@ -18,6 +19,13 @@ ARG PYTHON_VERSION=3.11
 # TODO: identify common packages
 ARG PKGS="apt-transport-https bash ca-certificates gnupg jq software-properties-common curl git unzip zip python${PYTHON_VERSION} python3-pip python3-dev python3-virtualenv apt-utils build-essential tree gpg snapd shellcheck wget"
 ARG JULIA_PKGS="wget"
+
+# Commands to install julia
+# wget https://julialang-s3.julialang.org/bin/linux/aarch64/1.8/julia-1.8.4-linux-aarch64.tar.gz
+# tar zxvf julia-1.8.4-linux-aarch64.tar.gz
+# then execute julia:
+# /root/julia-1.8.4/bin/julia 
+
 # Specify the target folder (in container) we will use for workspace
 ARG WORK_DIR=/opt/finance-helper
 # Specify name of image
