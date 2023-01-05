@@ -1,0 +1,23 @@
+---
+version: "3.4"
+services:
+  tools:
+    tty: true
+    volumes:
+      - type: bind
+        source: ../.
+        target: /opt/finance-helper
+    # Build the container from the Dockerfile before we run it
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      # args:
+      #   PY_VER: 3.11
+      #   WORK_DIR: /opt/finance-helper
+    network_mode: "bridge"
+    image: py_vanilla
+    # volumes:
+    #   - ".:/app"
+    #   - "~/.ssh:/home/ubuntu/.ssh"
+    # Add your .aws or .azure or .kube directories here
+    # - "$AZURE_CONFIG_DIR:/home/ubuntu/.azure"
