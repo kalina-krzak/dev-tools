@@ -4,9 +4,14 @@ services:
   tools:
     tty: true
     volumes:
+    # Bind mount the dev-tools directory to the container
       - type: bind
         source: ../.
-        target: /opt/finance-helper
+        target: "/opt/${PROJECT}/environment/"
+    # Bind mount also the project folder to the container
+      - type: bind
+        source: "${DEV_WORKING_DIR}"
+        target: "/opt/${PROJECT}/project/"
     # Build the container from the Dockerfile before we run it
     build:
       context: .

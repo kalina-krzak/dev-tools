@@ -26,10 +26,12 @@ ARG JULIA_PKGS="wget"
 # then execute julia:
 # /root/julia-1.8.4/bin/julia 
 
-# Specify the target folder (in container) we will use for workspace
-ARG WORK_DIR=/opt/finance-helper
 # Specify name of image
 ARG IMAGE_NAME="python_vanilla"
+ENV PROJECT=finance-helper
+# Specify the target folder (in container) we will use for workspace
+ARG DEV_WORKING_DIR=../../finance-helper/.
+ARG WORK_DIR=/opt/${PROJECT}
 
 # Specify user (should be default anyway)
 USER root
@@ -66,6 +68,8 @@ WORKDIR ${WORK_DIR}
 
 # Copy over requirements.txt file to install packages at build time
 COPY ./requirements.txt .
+# TODO: also install packages from the requirements.txt file in the 
+# DEV_WORKING_DIR (in case they are not part of the base image)
 
 # TODO: automatically clone git repo, make it a dynamic arg?
 # TODO: handle git credentials. So we don't have annoying personal access
@@ -82,8 +86,9 @@ RUN apt autoremove --purge -y && \
     rm -rf /var/lib/apt/lists/*
 
 # Create user ubuntu
-# RUN useradd -ms /bin/bash ubuntu
-# USER ubuntu
+RUN useradd -ms /bin/bash ubuntu
+USER ubuntu
+WORKDIR ${WORK_DIR}
 
 # TODO: automate attaching to running container :')
 
