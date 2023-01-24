@@ -1,3 +1,4 @@
+# TODO: reduce sudden bloat :(
 # Specify which version of Ubuntu we want to run
 ARG UBUNTU_VERSION=22.04
 
@@ -25,13 +26,6 @@ ARG JULIA_PKGS="wget"
 # tar zxvf julia-1.8.4-linux-aarch64.tar.gz
 # then execute julia:
 # /root/julia-1.8.4/bin/julia 
-
-# Specify name of image
-ARG IMAGE_NAME="python_vanilla"
-ENV PROJECT=finance-helper
-# Specify the target folder (in container) we will use for workspace
-ARG DEV_WORKING_DIR=../../finance-helper/.
-ARG WORK_DIR=/opt/${PROJECT}
 
 # Specify user (should be default anyway)
 USER root
@@ -62,6 +56,11 @@ RUN apt install python${PYTHON_VERSION} -y && \
 # RUN update-alternatives  --set python3 /usr/bin/python${PYTHON_VERSION}
 # RUN update-alternatives  --set python /usr/bin/python${PYTHON_VERSION}
 
+# Declare PROJECT arg which is set as arg by docker-compose.yml
+ARG PROJECT
+# Specify the target folder (in container) that we will use as workspace
+ARG WORK_DIR=/opt/${PROJECT}
+
 # Create working directory and then switch into it
 RUN mkdir -p ${WORK_DIR}
 WORKDIR ${WORK_DIR}
@@ -88,7 +87,6 @@ RUN apt autoremove --purge -y && \
 # Create user ubuntu
 RUN useradd -ms /bin/bash ubuntu
 USER ubuntu
-WORKDIR ${WORK_DIR}
 
 # TODO: automate attaching to running container :')
 

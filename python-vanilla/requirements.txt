@@ -1,1 +1,5 @@
 jupyter
+plotly
+plotly-express
+scikit-learn
+pandas  

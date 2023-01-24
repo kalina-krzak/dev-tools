@@ -6,7 +6,7 @@ services:
     volumes:
     # Bind mount the dev-tools directory to the container
       - type: bind
-        source: ../.
+        source: ./
         target: "/opt/${PROJECT}/environment/"
     # Bind mount also the project folder to the container
       - type: bind
@@ -16,11 +16,14 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-      # args:
-      #   PY_VER: 3.11
-      #   WORK_DIR: /opt/finance-helper
+      # Ensure that Dockerfile has access to required vars
+      # from .env file during build
+      args:
+        - PROJECT=$PROJECT
     network_mode: "bridge"
-    image: python_vanilla
+    image: "${PROJECT}"
+    container_name: "${PROJECT}-env"
+
     # volumes:
     #   - ".:/app"
     #   - "~/.ssh:/home/ubuntu/.ssh"
